@@ -10,4 +10,4 @@ app.use('/api/v1/upload',uploadToS3Router)
 
 
 
-app.listen(process.env.PORT || PORT , ()=>console.log(`server is up on PORT ${PORT}`))
+app.listen(process.env.PORT || PORT , ()=>console.log(`uploader is up on PORT ${PORT}`))
