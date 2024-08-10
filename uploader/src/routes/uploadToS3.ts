@@ -1,13 +1,22 @@
 import { Router } from "express";
 import { Clone } from "../lib/clone";
 import { create_id } from "../lib/clone";
-export const uploadToS3Router = Router()
+import { getAllFilesAndDirectories } from "../lib/files";
+import { uploadFilesToS3 } from "../lib/s3";
+export const uploadToS3Router = Router();
 
-uploadToS3Router.post('/gitrepo',async(req,res)=>{
-    const {gitrepourl} = req.body
-    const id =create_id()
-    const c=await Clone(gitrepourl,id)
-    res.json({
-        id
-    })
-})
+uploadToS3Router.post("/gitrepo", async (req, res) => {
+  const { gitrepourl } = req.body;
+  const id = create_id();
+  try {
+    const c = await Clone(gitrepourl, id);
+    const files_to_upload = getAllFilesAndDirectories(
+      `D:\\Dipak\\uploader\\uploads\\${id}`
+    );
+    await uploadFilesToS3(files_to_upload);
+
+  } catch (e) {}
+  res.json({
+    id,
+  });
+});
