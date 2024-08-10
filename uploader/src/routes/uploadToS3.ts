@@ -10,9 +10,8 @@ uploadToS3Router.post("/gitrepo", async (req, res) => {
   const id = create_id();
   try {
     const c = await Clone(gitrepourl, id);
-    const files_to_upload = getAllFilesAndDirectories(
-      `D:\\Dipak\\uploader\\uploads\\${id}`
-    );
+    const files_to_upload = getAllFilesAndDirectories(`D:\\Dipak\\uploader\\uploads\\${id}`);
+      
     await uploadFilesToS3(files_to_upload);
 
   } catch (e) {}

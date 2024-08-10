@@ -15,28 +15,23 @@ const s3 = new aws.S3();
 const bucketName = 'deployeruploads';
 
 export const uploadFilesToS3 = async (filePaths: string[]) => {
-    console.log('process.env.AWS_ACCESS_KEY_ID',process.env.AWS_ACCESS_KEY_ID,' process.env.AWS_SECRET_ACCESS_KEY', process.env.AWS_SECRET_ACCESS_KEY);
-    
+    const id = path.basename(path.dirname(filePaths[0]));
     const uploadPromises = filePaths
-        .filter(filePath => {
-            const isFile = fs.statSync(filePath).isFile();
-            return isFile; 
-        })
+        .filter(filePath => fs.statSync(filePath).isFile()) 
         .map(filePath => {
             const fileStream = fs.createReadStream(filePath);
-            const fileName = path.relative(path.dirname(filePaths[0]), filePath); 
-            const params = {
-                Bucket: bucketName,
-                Key: fileName,
-                Body: fileStream,
-            };
+            const relativePath = path.relative(path.dirname(filePaths[0]), filePath);
+            const s3Key = path.join(id, relativePath); 
 
-            return s3.upload(params).promise();
+            return s3.upload({
+                Bucket: bucketName,
+                Key: s3Key.replace(/\\/g, '/'),
+                Body: fileStream,
+            }).promise();
         });
 
     try {
         const results = await Promise.all(uploadPromises);
-        console.log('Files uploaded successfully:', results);
     } catch (error) {
         console.error('Error uploading files:', error);
     }
