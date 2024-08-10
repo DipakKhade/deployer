@@ -1,1 +1,4 @@
 node_modules
+code-deployer/node_modules
+code-deployer/dist
+code-deployer/package-lock.json
