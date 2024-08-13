@@ -1,5 +1,6 @@
 import { commandOptions, createClient } from "redis";
 import { getFilesFromS3 } from "./s3";
+import { generateBuild } from "./makeBuild";
 
 const Subscribe = createClient();
 Subscribe.connect();
@@ -15,6 +16,7 @@ async function main() {
     console.log(msg);
     if(msg?.element){
       await getFilesFromS3(msg.element)
+      await generateBuild(msg.element)
     }
   }
 }
