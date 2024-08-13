@@ -19,7 +19,7 @@ export const getFilesFromS3 = async (id:string)=>{
 
     const promises : Promise<any>[] | any = allFiles.Contents?.map(async({Key}:any)=>{
             return new Promise(async(resolve , reject )=>{
-                const local_path_to_store = path.join(__dirname , Key)
+                const local_path_to_store = path.join(__dirname , `/FileToMakeDist/${Key}`)
                 const outputFile = fs.createWriteStream(local_path_to_store);
                 const dir_name = path.dirname(local_path_to_store);
                 if (!fs.existsSync(dir_name)){
