@@ -4,6 +4,7 @@ import { create_id } from "../lib/clone";
 import { getAllFilesAndDirectories } from "../lib/files";
 import { uploadFilesToS3 } from "../lib/s3";
 import { createClient , RedisClientType} from 'redis'
+import { deleteUploadedFiles } from "../lib/deleteFiles";
 
 
 export const uploadToS3Router = Router();
@@ -29,6 +30,8 @@ uploadToS3Router.post("/gitrepo", async (req, res) => {
     await uploadFilesToS3(files_to_upload);
 
     await Publisher.lPush('repo-queue', id);
+
+    deleteUploadedFiles(id)
 
   } catch (e) {
 
