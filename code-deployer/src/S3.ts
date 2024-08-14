@@ -42,3 +42,46 @@ export const getFilesFromS3 = async (id:string)=>{
     await Promise.all(promises);
 
 }
+
+
+
+export const upload_dist=async(filePaths:string[],prefix:string)=>{
+    const id = path.basename(path.dirname(filePaths[0]));
+const uploadPromises = filePaths
+    .filter(filePath => fs.statSync(filePath).isFile()) 
+    .map(filePath => {
+        const fileStream = fs.createReadStream(filePath);
+        const relativePath = path.relative(path.dirname(filePaths[0]), filePath);
+        const s3Key = path.join(id, relativePath); 
+
+        return s3.upload({
+            Bucket: BUCKET_NAME,
+            Key: prefix+s3Key.replace(/\\/g, '/'),
+            Body: fileStream,
+        }).promise();
+    });
+
+try {
+    const results = await Promise.all(uploadPromises);
+} catch (error) {
+    console.error('Error uploading files:', error);
+}
+}
+
+
+
+export function getAllFilesAndDirectories(dirPath: string, arrayOfFilesAndDirs: string[] = []): string[] {
+    const files = fs.readdirSync(dirPath);
+
+    files.forEach((file) => {
+        const fullPath = path.join(dirPath, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            arrayOfFilesAndDirs.push(fullPath);
+            getAllFilesAndDirectories(fullPath, arrayOfFilesAndDirs);
+        } else {
+            arrayOfFilesAndDirs.push(fullPath);
+        }
+    });
+
+    return arrayOfFilesAndDirs;
+}
