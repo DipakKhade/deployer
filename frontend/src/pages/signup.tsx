@@ -86,7 +86,7 @@ export default function Signup() {
                         }}
                         className="w-full"
                       >
-                        Create account
+                        Verify Email
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
