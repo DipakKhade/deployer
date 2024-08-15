@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -9,11 +8,18 @@ import {
 import Signup from './pages/signup.tsx';
 import { Verify } from './pages/Verify.tsx';
 import AddPassword from './pages/AddPassword.tsx';
+import { Toaster} from 'sonner';
+import { CookiesProvider } from 'react-cookie';
+import ProtectedRoute from './components/ProtectedRoute.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: (
+      <ProtectedRoute>
+        <App/>
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/signup",
@@ -24,14 +30,19 @@ const router = createBrowserRouter([
     element: <Verify/>,
   },
   {
-    path: "/addpassword/:userid/:email",
+    path: "/addpassword/:userid/:email/:token",
     element: <AddPassword/>,
   },
 ]);
 
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-<RouterProvider router={router} />
-  </StrictMode>,
+  <>
+  <Toaster richColors position='top-left'/>
+  <CookiesProvider>
+  <RouterProvider router={router} />
+  </CookiesProvider>
+
+</>
 )
+
