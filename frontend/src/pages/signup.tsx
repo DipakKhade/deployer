@@ -9,8 +9,21 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import { useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../lib/utils";
+import { Dialog } from "@radix-ui/react-dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
 
 export default function Signup() {
+  const [email, SetEmail] = useState<string>("");
   return (
     <>
       <main className="min-h-screen">
@@ -34,7 +47,7 @@ export default function Signup() {
             </div>
 
             <div className="m-auto pl-[12vw] pt-[10vw]">
-              <Card className="p-8">
+              <Card className="p-8 shadow-none border-none">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-2xl">Create an account</CardTitle>
                   <CardDescription>
@@ -50,6 +63,7 @@ export default function Signup() {
                   <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
+                      onChange={(e) => SetEmail(e.target.value)}
                       id="email"
                       type="email"
                       placeholder="m@example.com"
@@ -57,7 +71,41 @@ export default function Signup() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">Create account</Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        onClick={async () => {
+                          const r = await axios.post(
+                            `${BACKEND_URL}/api/v1/user/signup`,
+                            {
+                              email,
+                            }
+                          );
+                          console.log(r);
+                        }}
+                        className="w-full"
+                      >
+                        Create account
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Link sended on {email}</DialogTitle>
+                        <DialogDescription>
+                         go to your Gmail and click on the verfication URL , to verfiy your mail
+                        </DialogDescription>
+                      </DialogHeader>
+                      
+                      <DialogFooter>
+                        <Button>
+                          <a href="https://mail.google.com/mail/u/1/#inbox">
+                          Go to Gmail
+                          </a>
+                          </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </CardFooter>
               </Card>
             </div>
