@@ -157,3 +157,25 @@ userRouter.post("/addpassword/:userid", async (req, res) => {
 
  
 });
+
+
+userRouter.post('/login',async(req,res)=>{
+  const {email , password} = req.body
+
+  const user = await db.user.findFirst({
+    where:{
+      email
+    }
+  })
+  if(user?.password===password){
+    return res.status(200).json({
+      success:true,
+      message:'login successfull'
+    })
+  }
+
+  return res.json({
+    success:false,
+    message:'invalid creditionals'
+  })
+})

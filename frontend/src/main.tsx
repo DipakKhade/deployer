@@ -11,6 +11,7 @@ import AddPassword from './pages/AddPassword.tsx';
 import { Toaster} from 'sonner';
 import { CookiesProvider } from 'react-cookie';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
+import Login from './pages/login.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
     path: "/addpassword/:userid/:email/:token",
     element: <AddPassword/>,
   },
+  {
+    path:'login',
+    element:<Login/>
+  }
 ]);
 
 

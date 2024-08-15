@@ -41,7 +41,7 @@ export default function Signup() {
       <main className="min-h-screen">
         <div className="flex">
           {/* left side */}
-          <div className="bg-purple-600 min-h-screen w-[50vw]">
+          <div className="bg-slate-800 min-h-screen w-[50vw]">
             <div>
               <span className="text-slate-50 text-3xl font-bold p-4">
                 deployer
