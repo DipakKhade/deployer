@@ -29,7 +29,6 @@ export default function AddPassword() {
   const [cookies, setCookie] = useCookies(["Authorization"]);
 
   useEffect(() => {
-    console.log(token);
     triggerRef.current?.click();
   }, []);
 
