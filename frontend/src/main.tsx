@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Signup from './pages/signup.tsx';
 import { Verify } from './pages/Verify.tsx';
+import AddPassword from './pages/AddPassword.tsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/verify/:id/:token",
     element: <Verify/>,
+  },
+  {
+    path: "/addpassword/:userid/:email",
+    element: <AddPassword/>,
   },
 ]);
 

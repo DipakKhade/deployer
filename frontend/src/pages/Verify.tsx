@@ -6,7 +6,6 @@ import { BACKEND_URL } from "../lib/utils";
 export function Verify() {
   const { id, token } = useParams();
   const [isVerfied, SetisVerified] = useState<boolean>(false);
-  const [jwttoken, SetJwtToken] = useState<string>("");
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -16,9 +15,8 @@ export function Verify() {
       );
       if (response.data.success) {
             SetisVerified(true);
-        SetJwtToken(response.data.token);
         setTimeout(()=>{
-            navigator('/')
+            navigator(`/addpassword/${response.data.userid}/${response.data.email}`)
         },2000)
       }
     })();
