@@ -13,10 +13,11 @@ export function Verify() {
       const response = await axios.get(
         `${BACKEND_URL}/api/v1/user/verify/${id}/${token}`
       );
+      console.log(response)
       if (response.data.success) {
             SetisVerified(true);
         setTimeout(()=>{
-            navigator(`/addpassword/${response.data.userid}/${response.data.email}`)
+            navigator(`/addpassword/${response.data.userid}/${response.data.email}/${response.data.token}`)
         },2000)
       }
     })();

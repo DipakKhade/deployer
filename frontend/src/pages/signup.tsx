@@ -21,9 +21,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
+import { toast } from "sonner";
 
 export default function Signup() {
   const [email, SetEmail] = useState<string>("");
+  const [loading , SetLoading] =  useState<boolean>(false);
+  const [isAlreadyUser,SetisAlreadyUser] = useState<boolean>(true);
+
+
+  function waithToSend(){
+    SetLoading(true)
+    setTimeout(() => {
+      SetLoading(false)
+    }, 3000);
+  }
+
   return (
     <>
       <main className="min-h-screen">
@@ -34,7 +46,7 @@ export default function Signup() {
               <span className="text-slate-50 text-3xl font-bold p-4">
                 deployer
               </span>
-              <div className="flex">asd</div>
+              <div className="flex">.</div>
             </div>
           </div>
 
@@ -76,12 +88,17 @@ export default function Signup() {
                       <Button
                         variant="outline"
                         onClick={async () => {
+                          waithToSend()
                           const r = await axios.post(
                             `${BACKEND_URL}/api/v1/user/signup`,
                             {
                               email,
                             }
                           );
+                          if(!r.data.success){
+                            SetisAlreadyUser(true)
+                            toast.warning(r.data.message)
+                          }
                           console.log(r);
                         }}
                         className="w-full"
@@ -90,6 +107,17 @@ export default function Signup() {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
+{
+  loading ?  <>
+  <DialogTitle>
+  <div
+  className="animate-spin inline-block size-16 border-[3px] border-current border-t-transparent text-purple-600 rounded-full dark:text-blue-500 text-3xl pr-4"
+  role="status"
+  aria-label="loading"
+>
+</div>  <span>Sending token url to {email}</span>
+</DialogTitle>
+</>:  <>
                       <DialogHeader>
                         <DialogTitle>Link sended on {email}</DialogTitle>
                         <DialogDescription>
@@ -104,6 +132,9 @@ export default function Signup() {
                           </a>
                           </Button>
                       </DialogFooter>
+                      </>
+}
+
                     </DialogContent>
                   </Dialog>
                 </CardFooter>
