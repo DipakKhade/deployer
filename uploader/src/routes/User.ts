@@ -3,13 +3,15 @@ import {db} from '../db'
 import { sendTokenViaEmail } from "../lib/mail";
 import crypto from 'crypto';
 import { FRONTEND_URL } from "../lib/exports";
+import jwt from 'jsonwebtoken';
+
 
 
 export const userRouter =  Router();
 
 userRouter.post('/signup',async(req,res)=>{
     const {email} = req.body;
-    console.log(email)
+
     if(!email){
         res.status(400).json({
             message:"enter valid email"
@@ -33,6 +35,7 @@ userRouter.post('/signup',async(req,res)=>{
 
 
         const message = `${FRONTEND_URL}/verify/${user_to_add.id}/${token}`;
+        console.log(message)
         await sendTokenViaEmail(email,message)
         res.status(200).json({
             message:`open your Gmail to verify ${email}`
@@ -78,8 +81,15 @@ userRouter.get('/verify/:id/:token',async(req,res)=>{
             }
         })
 
+        const token = jwt.sign({
+            id:user.id,
+            email:user.email
+        },process.env.JWT_SEC as string)
+
         res.status(200).json({
-            message:"verification successful"
+            success:true,
+            message:"verification successful",
+            token
         })
       }else{
         res.json({
