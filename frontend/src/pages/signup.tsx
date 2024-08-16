@@ -22,12 +22,13 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [email, SetEmail] = useState<string>("");
   const [loading , SetLoading] =  useState<boolean>(false);
   const [isAlreadyUser,SetisAlreadyUser] = useState<boolean>(true);
-
+const naviagte = useNavigate()
 
   function waithToSend(){
     SetLoading(true)
@@ -52,11 +53,7 @@ export default function Signup() {
 
           {/* right side */}
           <div className="">
-            <div className="flex justify-end">
-              <Button className="bg-white text-slate-600 shadow-none hover:bg-purple-100">
-                Login
-              </Button>
-            </div>
+           
 
             <div className="m-auto pl-[12vw] pt-[10vw]">
               <Card className="p-8 shadow-none border-none">
@@ -139,6 +136,13 @@ export default function Signup() {
                   </Dialog>
                 </CardFooter>
               </Card>
+
+              <div className="mt-6 text-slate-500 text-center">
+    <button
+    onClick={()=>naviagte('/login')}
+     className="hover:underline cursor-pointer">log in Here
+     </button>
+  </div>
             </div>
           </div>
         </div>
