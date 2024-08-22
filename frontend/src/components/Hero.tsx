@@ -1,9 +1,9 @@
-import { BACKEND_URL } from "../lib/utils"
 import { Button } from "./ui/button"
-import { axios_ } from "../lib/api"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Hero(){
+    const navigate =useNavigate()
 
     return<>
     <main>
@@ -12,11 +12,7 @@ export default function Hero(){
     </div>
     <div className="flex justify-center">
         <Button
-        onClick={async()=>{
-            const res = await axios_.get(`${BACKEND_URL}`,{ withCredentials: true }  )
-            console.log(res)
-
-        }}
+        onClick={()=>navigate('/deploy')}
         >Upload Your Code</Button>
     </div>
     </main>

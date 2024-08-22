@@ -12,6 +12,7 @@ import { Toaster} from 'sonner';
 import { CookiesProvider } from 'react-cookie';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import Login from './pages/login.tsx';
+import Deploy from './pages/deploy.tsx';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path:'login',
     element:<Login/>
+  },
+  {
+    path:'/deploy',
+    element:<Deploy/>
   }
 ]);
 

@@ -26,7 +26,8 @@ export default function AddPassword() {
   const [loading, SetLoading] = useState<boolean>(false);
 
   const navigator = useNavigate();
-  const [cookies, setCookie] = useCookies(["Authorization"]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_cookies, setCookie] = useCookies(["Authorization"]);
 
   useEffect(() => {
     triggerRef.current?.click();
@@ -88,7 +89,7 @@ export default function AddPassword() {
                   console.log(res);
                   if (res.data.success) {
                     const token = res.data.token;
-                    setCookie("Authorization", "Bearer " + token, {
+                    setCookie("Authorization" , token, {
                       path: "/",
                     });
 
