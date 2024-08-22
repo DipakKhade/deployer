@@ -11,7 +11,7 @@ userRouter.post("/signup", async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    res.status(400).json({
+    return res.status(400).json({
         success:false,
       message: "enter valid email",
     });
@@ -45,7 +45,7 @@ userRouter.post("/signup", async (req, res) => {
     const message = `${FRONTEND_URL}/verify/${user_to_add.id}/${token}`;
     console.log(message);
     // await sendTokenViaEmail(email,message)
-    res.status(200).json({
+    return res.status(200).json({
         success:true,
       message: `open your Gmail to verify ${email}`,
     });
@@ -120,8 +120,6 @@ userRouter.post("/addpassword/:userid", async (req, res) => {
     },
   });
 
-  console.log("actuali token", user?.token?.token);
-  console.log("user sended token ", token);
   if (!user?.isVerified) {
     res.json({
       success: false,
@@ -162,14 +160,29 @@ userRouter.post("/addpassword/:userid", async (req, res) => {
 userRouter.post('/login',async(req,res)=>{
   const {email , password} = req.body
 
+  if(!email || !password){
+    return res.json({
+      success:false,
+      message:'invalid creditionals'
+    })
+  }
+
+
+
   const user = await db.user.findFirst({
     where:{
       email
     }
   })
   if(user?.password===password){
+    const token = jwt.sign({
+      id:user?.id,
+      email:user?.email
+    },process.env.JWT_SEC as string)
+
     return res.status(200).json({
       success:true,
+      token,
       message:'login successfull'
     })
   }
