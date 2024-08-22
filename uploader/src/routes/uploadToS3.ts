@@ -16,8 +16,16 @@ let Publisher: RedisClientType;
   await Publisher.connect();
 })();
 
+
 uploadToS3Router.post("/gitrepo", async (req, res) => {
   const { gitrepourl } = req.body;
+
+  if(!gitrepourl){
+    return res.json({
+      success:false,
+      message:"enter a valid git repository url"
+    })
+  }
 
   const id = create_id();
 
@@ -32,7 +40,7 @@ uploadToS3Router.post("/gitrepo", async (req, res) => {
 
     await Publisher.lPush("repo-queue", id);
     console.log("repo-queue", id);
-
+    await Publisher.hSet('deployment-status',id,'uploaded')
     // deleteUploadedFiles(id)
   } catch (e) {
     console.log(e);

@@ -19,13 +19,8 @@ async function main() {
     if(msg?.element){
         await getFilesFromS3(msg.element)
         await generateBuild(msg.element)
-        setTimeout(async()=>{
-          const dist_path = path.join(__dirname,`/FileToMakeDist/${msg.element}/dist`)
-          console.log(dist_path)
-          const dist_files=getAllFilesAndDirectories(dist_path)
-          await upload_dist(dist_files,msg?.element)
-        },30000)
-       
+        const dist_files=getAllFilesAndDirectories(path.join(__dirname,`/FileToMakeDist/${msg.element}/dist`))
+        await upload_dist(dist_files,msg?.element)    
       
     }
   }

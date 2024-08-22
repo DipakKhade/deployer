@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { useCookies } from "react-cookie";
 
 export default function Appbar() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [coockie , setCookie , removeCookie] = useCookies(['Authorization']);
 
   return (
